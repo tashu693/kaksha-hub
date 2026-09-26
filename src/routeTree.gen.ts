@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BranchesRouteImport } from './routes/branches'
+import { Route as ContributeRouteImport } from './routes/contribute'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as MyResourcesRouteImport } from './routes/my-resources'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SemesterRouteImport } from './routes/semester'
+import { Route as ContributorsContributorIdRouteImport } from './routes/contributors.$contributorId'
 import { Route as ResourcesIndexRouteImport } from './routes/resources.index'
 import { Route as ResourcesResourceIdRouteImport } from './routes/resources.$resourceId'
 
@@ -26,6 +30,21 @@ const BranchesRoute = BranchesRouteImport.update({
   path: '/branches',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContributeRoute = ContributeRouteImport.update({
+  id: '/contribute',
+  path: '/contribute',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyResourcesRoute = MyResourcesRouteImport.update({
+  id: '/my-resources',
+  path: '/my-resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
@@ -36,6 +55,12 @@ const SemesterRoute = SemesterRouteImport.update({
   path: '/semester',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContributorsContributorIdRoute =
+  ContributorsContributorIdRouteImport.update({
+    id: '/contributors/$contributorId',
+    path: '/contributors/$contributorId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -50,15 +75,23 @@ const ResourcesResourceIdRoute = ResourcesResourceIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/branches': typeof BranchesRoute
+  '/contribute': typeof ContributeRoute
+  '/dashboard': typeof DashboardRoute
+  '/my-resources': typeof MyResourcesRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/semester': typeof SemesterRoute
+  '/contributors/$contributorId': typeof ContributorsContributorIdRoute
   '/resources/$resourceId': typeof ResourcesResourceIdRoute
   '/resources/': typeof ResourcesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/branches': typeof BranchesRoute
+  '/contribute': typeof ContributeRoute
+  '/dashboard': typeof DashboardRoute
+  '/my-resources': typeof MyResourcesRoute
   '/semester': typeof SemesterRoute
+  '/contributors/$contributorId': typeof ContributorsContributorIdRoute
   '/resources/$resourceId': typeof ResourcesResourceIdRoute
   '/resources': typeof ResourcesIndexRoute
 }
@@ -66,8 +99,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/branches': typeof BranchesRoute
+  '/contribute': typeof ContributeRoute
+  '/dashboard': typeof DashboardRoute
+  '/my-resources': typeof MyResourcesRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/semester': typeof SemesterRoute
+  '/contributors/$contributorId': typeof ContributorsContributorIdRoute
   '/resources/$resourceId': typeof ResourcesResourceIdRoute
   '/resources/': typeof ResourcesIndexRoute
 }
@@ -76,18 +113,35 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/branches'
+    | '/contribute'
+    | '/dashboard'
+    | '/my-resources'
     | '/resources'
     | '/semester'
+    | '/contributors/$contributorId'
     | '/resources/$resourceId'
     | '/resources/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/branches' | '/semester' | '/resources/$resourceId' | '/resources'
+  to:
+    | '/'
+    | '/branches'
+    | '/contribute'
+    | '/dashboard'
+    | '/my-resources'
+    | '/semester'
+    | '/contributors/$contributorId'
+    | '/resources/$resourceId'
+    | '/resources'
   id:
     | '__root__'
     | '/'
     | '/branches'
+    | '/contribute'
+    | '/dashboard'
+    | '/my-resources'
     | '/resources'
     | '/semester'
+    | '/contributors/$contributorId'
     | '/resources/$resourceId'
     | '/resources/'
   fileRoutesById: FileRoutesById
@@ -95,8 +149,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BranchesRoute: typeof BranchesRoute
+  ContributeRoute: typeof ContributeRoute
+  DashboardRoute: typeof DashboardRoute
+  MyResourcesRoute: typeof MyResourcesRoute
   ResourcesRoute: typeof ResourcesRouteWithChildren
   SemesterRoute: typeof SemesterRoute
+  ContributorsContributorIdRoute: typeof ContributorsContributorIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +173,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BranchesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contribute': {
+      id: '/contribute'
+      path: '/contribute'
+      fullPath: '/contribute'
+      preLoaderRoute: typeof ContributeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-resources': {
+      id: '/my-resources'
+      path: '/my-resources'
+      fullPath: '/my-resources'
+      preLoaderRoute: typeof MyResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources': {
       id: '/resources'
       path: '/resources'
@@ -127,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/semester'
       fullPath: '/semester'
       preLoaderRoute: typeof SemesterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contributors/$contributorId': {
+      id: '/contributors/$contributorId'
+      path: '/contributors/$contributorId'
+      fullPath: '/contributors/$contributorId'
+      preLoaderRoute: typeof ContributorsContributorIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources/': {
@@ -163,8 +249,12 @@ const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BranchesRoute: BranchesRoute,
+  ContributeRoute: ContributeRoute,
+  DashboardRoute: DashboardRoute,
+  MyResourcesRoute: MyResourcesRoute,
   ResourcesRoute: ResourcesRouteWithChildren,
   SemesterRoute: SemesterRoute,
+  ContributorsContributorIdRoute: ContributorsContributorIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
