@@ -1,0 +1,8 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { PageHeader } from "@/components/kaksha/page-ui";
+import { branches } from "@/lib/mock-data";
+import { pageMeta } from "@/lib/route-meta";
+
+export const Route = createFileRoute("/branches")({ head: () => pageMeta("Engineering Branches", "Browse AKTU study resources by engineering branch."), component: BranchesPage });
+function BranchesPage() { return <><PageHeader eyebrow="Academic directory" title="Find your engineering branch" description="Start with your programme, then narrow study material by semester and subject." /><div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8"><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{branches.map((branch) => <Link key={branch.code} to="/semester" search={{ branch: branch.code }} className="group rounded-lg border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-card-hover"><div className="flex items-start justify-between"><span className="grid size-12 place-items-center rounded-md bg-primary/10 font-display font-bold text-primary">{branch.icon}</span><ArrowRight className="size-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" /></div><p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{branch.code}</p><h2 className="mt-2 font-display text-lg font-bold">{branch.name}</h2><p className="mt-3 text-sm text-muted-foreground">{branch.count} curated resources</p></Link>)}</div></div></>; }
