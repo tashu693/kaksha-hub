@@ -10,17 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BranchesRouteImport } from './routes/branches'
 import { Route as ContributeRouteImport } from './routes/contribute'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as MyResourcesRouteImport } from './routes/my-resources'
 import { Route as NotificationsRouteImport } from './routes/notifications'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SemesterRouteImport } from './routes/semester'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedMyResourcesRouteImport } from './routes/_authenticated/my-resources'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as ContributorsContributorIdRouteImport } from './routes/contributors.$contributorId'
 import { Route as ResourcesIndexRouteImport } from './routes/resources.index'
 import { Route as ResourcesResourceIdRouteImport } from './routes/resources.$resourceId'
@@ -28,11 +28,6 @@ import { Route as ResourcesResourceIdRouteImport } from './routes/resources.$res
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BranchesRoute = BranchesRouteImport.update({
@@ -45,29 +40,14 @@ const ContributeRoute = ContributeRouteImport.update({
   path: '/contribute',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MyResourcesRoute = MyResourcesRouteImport.update({
-  id: '/my-resources',
-  path: '/my-resources',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NotificationsRoute = NotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -83,6 +63,27 @@ const ResourcesRoute = ResourcesRouteImport.update({
 const SemesterRoute = SemesterRouteImport.update({
   id: '/semester',
   path: '/semester',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/_authenticated/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/_authenticated/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMyResourcesRoute =
+  AuthenticatedMyResourcesRouteImport.update({
+    id: '/_authenticated/my-resources',
+    path: '/my-resources',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/_authenticated/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContributorsContributorIdRoute =
@@ -104,33 +105,33 @@ const ResourcesResourceIdRoute = ResourcesResourceIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/branches': typeof BranchesRoute
   '/contribute': typeof ContributeRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/my-resources': typeof MyResourcesRoute
   '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/semester': typeof SemesterRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/my-resources': typeof AuthenticatedMyResourcesRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/contributors/$contributorId': typeof ContributorsContributorIdRoute
   '/resources/$resourceId': typeof ResourcesResourceIdRoute
   '/resources/': typeof ResourcesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/branches': typeof BranchesRoute
   '/contribute': typeof ContributeRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/my-resources': typeof MyResourcesRoute
   '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/semester': typeof SemesterRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/my-resources': typeof AuthenticatedMyResourcesRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/contributors/$contributorId': typeof ContributorsContributorIdRoute
   '/resources/$resourceId': typeof ResourcesResourceIdRoute
   '/resources': typeof ResourcesIndexRoute
@@ -138,17 +139,17 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/branches': typeof BranchesRoute
   '/contribute': typeof ContributeRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/my-resources': typeof MyResourcesRoute
   '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/semester': typeof SemesterRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/my-resources': typeof AuthenticatedMyResourcesRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/contributors/$contributorId': typeof ContributorsContributorIdRoute
   '/resources/$resourceId': typeof ResourcesResourceIdRoute
   '/resources/': typeof ResourcesIndexRoute
@@ -157,50 +158,50 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
     | '/branches'
     | '/contribute'
-    | '/dashboard'
     | '/login'
-    | '/my-resources'
     | '/notifications'
-    | '/profile'
     | '/register'
     | '/resources'
     | '/semester'
+    | '/admin'
+    | '/dashboard'
+    | '/my-resources'
+    | '/profile'
     | '/contributors/$contributorId'
     | '/resources/$resourceId'
     | '/resources/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/branches'
     | '/contribute'
-    | '/dashboard'
     | '/login'
-    | '/my-resources'
     | '/notifications'
-    | '/profile'
     | '/register'
     | '/semester'
+    | '/admin'
+    | '/dashboard'
+    | '/my-resources'
+    | '/profile'
     | '/contributors/$contributorId'
     | '/resources/$resourceId'
     | '/resources'
   id:
     | '__root__'
     | '/'
-    | '/admin'
     | '/branches'
     | '/contribute'
-    | '/dashboard'
     | '/login'
-    | '/my-resources'
     | '/notifications'
-    | '/profile'
     | '/register'
     | '/resources'
     | '/semester'
+    | '/_authenticated/admin'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/my-resources'
+    | '/_authenticated/profile'
     | '/contributors/$contributorId'
     | '/resources/$resourceId'
     | '/resources/'
@@ -208,17 +209,17 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
   BranchesRoute: typeof BranchesRoute
   ContributeRoute: typeof ContributeRoute
-  DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
-  MyResourcesRoute: typeof MyResourcesRoute
   NotificationsRoute: typeof NotificationsRoute
-  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   ResourcesRoute: typeof ResourcesRouteWithChildren
   SemesterRoute: typeof SemesterRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMyResourcesRoute: typeof AuthenticatedMyResourcesRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   ContributorsContributorIdRoute: typeof ContributorsContributorIdRoute
 }
 
@@ -229,13 +230,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/branches': {
@@ -252,13 +246,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContributeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -266,25 +253,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/my-resources': {
-      id: '/my-resources'
-      path: '/my-resources'
-      fullPath: '/my-resources'
-      preLoaderRoute: typeof MyResourcesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/notifications': {
       id: '/notifications'
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -306,6 +279,34 @@ declare module '@tanstack/react-router' {
       path: '/semester'
       fullPath: '/semester'
       preLoaderRoute: typeof SemesterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/my-resources': {
+      id: '/_authenticated/my-resources'
+      path: '/my-resources'
+      fullPath: '/my-resources'
+      preLoaderRoute: typeof AuthenticatedMyResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contributors/$contributorId': {
@@ -348,17 +349,17 @@ const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
   BranchesRoute: BranchesRoute,
   ContributeRoute: ContributeRoute,
-  DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
-  MyResourcesRoute: MyResourcesRoute,
   NotificationsRoute: NotificationsRoute,
-  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   ResourcesRoute: ResourcesRouteWithChildren,
   SemesterRoute: SemesterRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMyResourcesRoute: AuthenticatedMyResourcesRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   ContributorsContributorIdRoute: ContributorsContributorIdRoute,
 }
 export const routeTree = rootRouteImport
