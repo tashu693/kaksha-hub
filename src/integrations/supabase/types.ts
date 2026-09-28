@@ -83,6 +83,88 @@ export type Database = {
           },
         ]
       }
+      resources: {
+        Row: {
+          branch_id: string
+          contributor_id: string | null
+          contributor_name: string
+          created_at: string
+          description: string
+          file_url: string | null
+          id: string
+          resource_type: string
+          semester_id: string
+          slug: string
+          status: Database["public"]["Enums"]["resource_status"]
+          subject_id: string
+          tags: string[]
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          view_count: number
+        }
+        Insert: {
+          branch_id: string
+          contributor_id?: string | null
+          contributor_name?: string
+          created_at?: string
+          description?: string
+          file_url?: string | null
+          id?: string
+          resource_type: string
+          semester_id: string
+          slug: string
+          status?: Database["public"]["Enums"]["resource_status"]
+          subject_id: string
+          tags?: string[]
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          view_count?: number
+        }
+        Update: {
+          branch_id?: string
+          contributor_id?: string | null
+          contributor_name?: string
+          created_at?: string
+          description?: string
+          file_url?: string | null
+          id?: string
+          resource_type?: string
+          semester_id?: string
+          slug?: string
+          status?: Database["public"]["Enums"]["resource_status"]
+          subject_id?: string
+          tags?: string[]
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resources_semester_id_fkey"
+            columns: ["semester_id"]
+            isOneToOne: false
+            referencedRelation: "semesters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resources_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       semesters: {
         Row: {
           created_at: string
@@ -179,9 +261,11 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_resource_view: { Args: { _slug: string }; Returns: undefined }
     }
     Enums: {
       app_role: "student" | "admin"
+      resource_status: "approved" | "pending" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -310,6 +394,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "admin"],
+      resource_status: ["approved", "pending", "rejected"],
     },
   },
 } as const
