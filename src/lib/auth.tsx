@@ -53,10 +53,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={{ loading, session, user: session?.user ?? null, profile, role, refreshProfile }}>{children}</AuthContext.Provider>;
 }
 
+const fallbackAuth: AuthState = { loading: true, session: null, user: null, profile: null, role: null, refreshProfile: async () => {} };
+
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
-  return ctx;
+  return ctx ?? fallbackAuth;
 }
 
 export function initials(name: string | null | undefined) {

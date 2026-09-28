@@ -1,4 +1,7 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
 import { Bell, BookOpen, GitBranch, GraduationCap, Home, Linkedin, Menu, Upload, UserRound, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +27,16 @@ const mobileLinks = [
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  async function signOut() {
+    setOpen(false);
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/login", replace: true });
+  }
   return (
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
@@ -37,11 +50,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Notifications"><Link to="/notifications"><Bell /><span className="absolute mt-[-22px] ml-[18px] size-2 rounded-full bg-highlight" /></Link></Button>
-            <Button asChild className="hidden sm:inline-flex"><Link to="/dashboard">Dashboard</Link></Button>
+            {user ? <><Button asChild className="hidden sm:inline-flex"><Link to="/dashboard">Dashboard</Link></Button><Button variant="outline" className="hidden sm:inline-flex" onClick={signOut}>Log out</Button></> : <><Button asChild variant="outline" className="hidden sm:inline-flex"><Link to="/login">Log in</Link></Button><Button asChild className="hidden sm:inline-flex"><Link to="/register">Register</Link></Button></>}
             <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen((value) => !value)}>{open ? <X /> : <Menu />}</Button>
           </div>
         </div>
-        {open && <nav className="border-t border-border bg-background px-4 py-3 lg:hidden" aria-label="Mobile menu">{desktopLinks.map((item) => <Link key={item.to} to={item.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-2.5 text-sm font-medium hover:bg-accent">{item.label}</Link>)}<div className="mt-2 grid grid-cols-2 gap-2"><Button asChild variant="outline"><Link to="/login">Log in</Link></Button><Button asChild><Link to="/register">Register</Link></Button></div></nav>}
+        {open && <nav className="border-t border-border bg-background px-4 py-3 lg:hidden" aria-label="Mobile menu">{desktopLinks.map((item) => <Link key={item.to} to={item.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-2.5 text-sm font-medium hover:bg-accent">{item.label}</Link>)}{user ? <div className="mt-2 grid grid-cols-2 gap-2"><Button asChild><Link to="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link></Button><Button variant="outline" onClick={signOut}>Log out</Button></div> : <div className="mt-2 grid grid-cols-2 gap-2"><Button asChild variant="outline"><Link to="/login">Log in</Link></Button><Button asChild><Link to="/register">Register</Link></Button></div>}</nav>}
       </header>
       <main>{children}</main>
       <CreatorSection />
