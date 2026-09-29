@@ -9,7 +9,8 @@ import { ResourceCard, ResourceCardSkeleton } from "@/components/kaksha/resource
 import { branchesQuery, PAGE_SIZE, RESOURCE_TYPES, resourcesQuery, subjectsQuery } from "@/lib/library";
 import { pageMeta } from "@/lib/route-meta";
 
-const schema = z.object({ q: z.string().optional(), branch: z.string().optional(), semester: z.string().optional(), subject: z.string().optional(), type: z.string().optional(), sort: z.string().optional(), page: z.coerce.number().int().min(1).optional() });
+const s = z.coerce.string().optional();
+const schema = z.object({ q: s, branch: s, semester: s, subject: s, type: s, sort: s, page: z.coerce.number().int().min(1).optional() });
 export const Route = createFileRoute("/resources/")({ validateSearch: (search) => schema.parse(search), head: () => pageMeta("Resource Library", "Search and filter AKTU notes, papers, assignments, practical files and study material."), component: ResourcesPage });
 
 function ResourcesPage() {

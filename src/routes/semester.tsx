@@ -7,7 +7,7 @@ import { subjectsQuery } from "@/lib/library";
 import { pageMeta } from "@/lib/route-meta";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/semester")({ validateSearch: (search) => z.object({ branch: z.string().optional(), semester: z.string().optional() }).parse(search), head: () => pageMeta("Semester Explorer", "Choose an AKTU semester and explore subjects and study resources."), component: SemesterPage });
+export const Route = createFileRoute("/semester")({ validateSearch: (search) => z.object({ branch: z.coerce.string().optional(), semester: z.coerce.string().optional() }).parse(search), head: () => pageMeta("Semester Explorer", "Choose an AKTU semester and explore subjects and study resources."), component: SemesterPage });
 
 function SemesterPage() {
   const { branch = "CSE", semester } = Route.useSearch();
