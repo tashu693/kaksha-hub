@@ -46,7 +46,7 @@ function toResource(r: Row): LibraryResource {
   };
 }
 
-export type ResourceFilters = { q?: string; branch?: string; semester?: string; subject?: string; type?: string; sort?: string; page?: number };
+export type ResourceFilters = { q?: string | undefined; branch?: string | undefined; semester?: string | undefined; subject?: string | undefined; type?: string | undefined; sort?: string | undefined; page?: number | undefined };
 
 export const resourcesQuery = (f: ResourceFilters) =>
   queryOptions({
@@ -102,7 +102,7 @@ export const branchesQuery = () =>
     },
   });
 
-export const subjectsQuery = (branch?: string, semester?: string) =>
+export const subjectsQuery = (branch?: string | undefined, semester?: string | undefined) =>
   queryOptions({
     queryKey: ["subjects", branch ?? "", semester ?? ""],
     staleTime: 5 * 60_000,
