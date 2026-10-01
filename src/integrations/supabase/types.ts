@@ -90,9 +90,12 @@ export type Database = {
           contributor_name: string
           created_at: string
           description: string
+          file_path: string | null
           file_url: string | null
           id: string
+          rejection_reason: string | null
           resource_type: string
+          reviewed_at: string | null
           semester_id: string
           slug: string
           status: Database["public"]["Enums"]["resource_status"]
@@ -109,11 +112,14 @@ export type Database = {
           contributor_name?: string
           created_at?: string
           description?: string
+          file_path?: string | null
           file_url?: string | null
           id?: string
+          rejection_reason?: string | null
           resource_type: string
+          reviewed_at?: string | null
           semester_id: string
-          slug: string
+          slug?: string
           status?: Database["public"]["Enums"]["resource_status"]
           subject_id: string
           tags?: string[]
@@ -128,9 +134,12 @@ export type Database = {
           contributor_name?: string
           created_at?: string
           description?: string
+          file_path?: string | null
           file_url?: string | null
           id?: string
+          rejection_reason?: string | null
           resource_type?: string
+          reviewed_at?: string | null
           semester_id?: string
           slug?: string
           status?: Database["public"]["Enums"]["resource_status"]
