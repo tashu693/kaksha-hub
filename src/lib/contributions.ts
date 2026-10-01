@@ -40,12 +40,12 @@ export async function uploadWithProgress(file: File, userId: string, onProgress:
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "bin";
   const safe = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9-_]+/g, "-").slice(0, 60) || "file";
   const path = `${userId}/${crypto.randomUUID()}-${safe}.${ext}`;
-  const url = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`;
+  const url = `${import.meta.env['VITE_SUPABASE_URL']}/storage/v1/object/${BUCKET}/${path}`;
   await new Promise<void>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", url);
     xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-    xhr.setRequestHeader("apikey", import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+    xhr.setRequestHeader("apikey", import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY']);
     xhr.setRequestHeader("x-upsert", "false");
     if (file.type) xhr.setRequestHeader("Content-Type", file.type);
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));

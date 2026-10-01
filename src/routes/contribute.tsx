@@ -66,7 +66,7 @@ function ContributeForm({ userId, defaults }: { userId: string; defaults: { bran
       const path = await uploadWithProgress(file!, userId, setProgress);
       await createSubmission(parsed.data, path, userId);
       await qc.invalidateQueries({ queryKey: ["my-contributions"] });
-      navigate({ to: "/my-resources", search: { submitted: "1" } });
+      navigate({ to: "/my-resources" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
       setProgress(null);
