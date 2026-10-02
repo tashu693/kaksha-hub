@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "@/components/kaksha/app-shell";
 import { AuthProvider } from "@/lib/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -121,7 +122,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider><AppShell><Outlet /></AppShell></AuthProvider>
+      <AuthProvider><AppShell><Outlet /></AppShell><Toaster richColors /></AuthProvider>
     </QueryClientProvider>
   );
 }
