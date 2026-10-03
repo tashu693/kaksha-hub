@@ -35,6 +35,50 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          dedupe_key: string | null
+          id: string
+          is_read: boolean
+          message: string
+          resource_id: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dedupe_key?: string | null
+          id?: string
+          is_read?: boolean
+          message?: string
+          resource_id?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dedupe_key?: string | null
+          id?: string
+          is_read?: boolean
+          message?: string
+          resource_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -83,6 +127,96 @@ export type Database = {
           },
         ]
       }
+      recently_viewed: {
+        Row: {
+          id: string
+          resource_id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          resource_id: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          resource_id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recently_viewed_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_downloads: {
+        Row: {
+          contributor_id: string | null
+          downloaded_at: string
+          id: string
+          resource_id: string
+          user_id: string
+        }
+        Insert: {
+          contributor_id?: string | null
+          downloaded_at?: string
+          id?: string
+          resource_id: string
+          user_id: string
+        }
+        Update: {
+          contributor_id?: string | null
+          downloaded_at?: string
+          id?: string
+          resource_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_downloads_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_helpful: {
+        Row: {
+          created_at: string
+          id: string
+          resource_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          resource_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          resource_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_helpful_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       resources: {
         Row: {
           branch_id: string
@@ -90,8 +224,10 @@ export type Database = {
           contributor_name: string
           created_at: string
           description: string
+          download_count: number
           file_path: string | null
           file_url: string | null
+          helpful_count: number
           id: string
           rejection_reason: string | null
           resource_type: string
@@ -112,8 +248,10 @@ export type Database = {
           contributor_name?: string
           created_at?: string
           description?: string
+          download_count?: number
           file_path?: string | null
           file_url?: string | null
+          helpful_count?: number
           id?: string
           rejection_reason?: string | null
           resource_type: string
@@ -134,8 +272,10 @@ export type Database = {
           contributor_name?: string
           created_at?: string
           description?: string
+          download_count?: number
           file_path?: string | null
           file_url?: string | null
+          helpful_count?: number
           id?: string
           rejection_reason?: string | null
           resource_type?: string
@@ -170,6 +310,35 @@ export type Database = {
             columns: ["subject_id"]
             isOneToOne: false
             referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      saved_resources: {
+        Row: {
+          created_at: string
+          id: string
+          resource_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          resource_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          resource_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_resources_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
             referencedColumns: ["id"]
           },
         ]
@@ -263,6 +432,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_contributor: {
+        Args: { _id: string }
+        Returns: {
+          approved: number
+          avatar_url: string
+          branch: string
+          downloads: number
+          full_name: string
+          helpful: number
+          id: string
+          reached: number
+          semester: number
+          shared: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -271,6 +455,18 @@ export type Database = {
         Returns: boolean
       }
       increment_resource_view: { Args: { _slug: string }; Returns: undefined }
+      notify: {
+        Args: {
+          _key?: string
+          _msg: string
+          _res: string
+          _title: string
+          _type: string
+          _user: string
+        }
+        Returns: undefined
+      }
+      record_download: { Args: { _resource_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "student" | "admin"
