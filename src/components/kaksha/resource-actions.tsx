@@ -21,7 +21,7 @@ export function ResourceActions({ resource, size = "sm", className }: { resource
   const [delta, setDelta] = useState(0);
 
   const run = async (key: string, fn: () => Promise<void>, ok?: string) => {
-    if (!user) return toast.info("Log in to use this.", { description: "Create a free account to save, download and react." });
+    if (!user) { toast.info("Log in to use this.", { description: "Create a free account to save, download and react." }); return; }
     setBusy(key);
     try { await fn(); if (ok) toast.success(ok); await refreshEngagement(qc); setDelta(0); }
     catch (e) { toast.error((e as Error).message); }

@@ -50,9 +50,9 @@ function Dashboard() {
         <StatCard icon={ThumbsUp} label="Helpful likes" value={v(imp?.helpful)} detail="On your resources" />
       </div>
 
-      <section className="mt-16"><SectionHeading eyebrow="Pick up where you left off" title="Continue learning" action={<Link to="/my-resources" search={{ tab: "downloads" }} className="text-sm font-semibold text-primary">My downloads</Link>} />
+      <section className="mt-16"><SectionHeading eyebrow="Pick up where you left off" title="Continue learning" action={<Link to="/my-resources" className="text-sm font-semibold text-primary">My downloads</Link>} />
         <Grid q={downloads} empty="Files you download will show up here." /></section>
-      <section className="mt-16"><SectionHeading eyebrow="History" title="Recently viewed" action={<Link to="/my-resources" search={{ tab: "recent" }} className="text-sm font-semibold text-primary">See all</Link>} />
+      <section className="mt-16"><SectionHeading eyebrow="History" title="Recently viewed" action={<Link to="/my-resources" className="text-sm font-semibold text-primary">See all</Link>} />
         <Grid q={recent} empty="Resources you open will appear here." /></section>
       <section className="mt-16"><SectionHeading eyebrow="For you" title="Recommended resources" />
         <Grid q={{ ...recs, data: recs.data?.items }} empty={<>No resources for your branch and semester yet — <Link to="/resources" className="font-semibold text-primary">browse the library</Link>.</>} /></section>
