@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Eye, UserRound } from "lucide-react";
+import { Download, Eye, ThumbsUp, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ResourceActions } from "@/components/kaksha/resource-actions";
 import type { LibraryResource } from "@/lib/library";
 
-type CardResource = Pick<LibraryResource, "id" | "title" | "type" | "subject" | "code" | "branch" | "semester" | "contributor" | "date" | "views" | "description">;
+type CardResource = Pick<LibraryResource, "id" | "title" | "type" | "subject" | "code" | "branch" | "semester" | "contributor" | "date" | "views" | "description"> &
+  Partial<Pick<LibraryResource, "uuid" | "contributorId" | "downloads" | "helpful" | "filePath" | "fileUrl">>;
 
 export function ResourceCard({ resource, compact = false }: { resource: CardResource; compact?: boolean }) {
   return (
@@ -15,9 +17,16 @@ export function ResourceCard({ resource, compact = false }: { resource: CardReso
       <p className="mt-2 text-sm text-muted-foreground">{resource.subject} · {resource.code}</p>
       {!compact && <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{resource.description}</p>}
       <div className="mt-4 flex flex-wrap gap-2 text-xs font-medium text-muted-foreground"><span>{resource.branch}</span><span>•</span><span>Semester {String(resource.semester).padStart(2, "0")}</span><span>•</span><span>{resource.date}</span></div>
-      <div className="mt-auto flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-        <span className="flex items-center gap-1.5"><UserRound className="size-3.5" /><span className="font-medium">{resource.contributor}</span></span>
-        <span className="flex items-center gap-1"><Eye className="size-3.5" />{resource.views}</span>
+      {resource.uuid && <ResourceActions className="mt-4" resource={{ uuid: resource.uuid, helpful: resource.helpful ?? 0, filePath: resource.filePath ?? null, fileUrl: resource.fileUrl ?? null }} />}
+      <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4 text-xs text-muted-foreground [&]:mt-4">
+        {resource.contributorId
+          ? <Link to="/contributors/$contributorId" params={{ contributorId: resource.contributorId }} className="flex min-w-0 items-center gap-1.5 hover:text-primary"><UserRound className="size-3.5 shrink-0" /><span className="truncate font-medium">{resource.contributor}</span></Link>
+          : <span className="flex min-w-0 items-center gap-1.5"><UserRound className="size-3.5 shrink-0" /><span className="truncate font-medium">{resource.contributor}</span></span>}
+        <span className="flex shrink-0 items-center gap-3">
+          <span className="flex items-center gap-1" title="Views"><Eye className="size-3.5" />{resource.views}</span>
+          {resource.downloads !== undefined && <span className="flex items-center gap-1" title="Downloads"><Download className="size-3.5" />{resource.downloads}</span>}
+          {resource.helpful !== undefined && <span className="flex items-center gap-1" title="Helpful"><ThumbsUp className="size-3.5" />{resource.helpful}</span>}
+        </span>
       </div>
     </article>
   );

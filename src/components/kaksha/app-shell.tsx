@@ -1,7 +1,8 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { unreadCountQuery } from "@/lib/engagement";
 import { Bell, BookOpen, GitBranch, GraduationCap, Home, Linkedin, Menu, Upload, UserRound, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user } = useAuth();
+  const unread = useQuery(unreadCountQuery(user?.id)).data ?? 0;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   async function signOut() {
@@ -49,7 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {desktopLinks.map((item) => <Link key={item.to} to={item.to} className={cn("rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground", pathname === item.to && "bg-accent text-foreground")}>{item.label}</Link>)}
           </nav>
           <div className="flex items-center gap-2">
-            <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Notifications"><Link to="/notifications"><Bell /><span className="absolute mt-[-22px] ml-[18px] size-2 rounded-full bg-highlight" /></Link></Button>
+            <Button asChild variant="ghost" size="icon" className="relative" aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}><Link to="/notifications"><Bell />{unread > 0 && <span className="absolute -right-0.5 -top-0.5 grid min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold leading-5 text-primary-foreground">{unread > 9 ? "9+" : unread}</span>}</Link></Button>
             {user ? <><Button asChild className="hidden sm:inline-flex"><Link to="/dashboard">Dashboard</Link></Button><Button variant="outline" className="hidden sm:inline-flex" onClick={signOut}>Log out</Button></> : <><Button asChild variant="outline" className="hidden sm:inline-flex"><Link to="/login">Log in</Link></Button><Button asChild className="hidden sm:inline-flex"><Link to="/register">Register</Link></Button></>}
             <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen((value) => !value)}>{open ? <X /> : <Menu />}</Button>
           </div>

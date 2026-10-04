@@ -11,6 +11,10 @@ export const PAGE_SIZE = 12;
 
 export type LibraryResource = {
   id: string;
+  uuid: string;
+  contributorId: string | null;
+  downloads: number;
+  helpful: number;
   title: string;
   type: string;
   subject: string;
@@ -28,10 +32,11 @@ export type LibraryResource = {
 
 export type SubjectItem = { id: string; name: string; code: string; branch: string; semester: number };
 
-const RESOURCE_SELECT =
-  "slug,title,description,resource_type,tags,file_url,file_path,contributor_name,view_count,created_at,subjects!inner(name,code),branches!inner(code),semesters!inner(number)";
+export const RESOURCE_SELECT =
+  "id,contributor_id,helpful_count,download_count,slug,title,description,resource_type,tags,file_url,file_path,contributor_name,view_count,created_at,subjects!inner(name,code),branches!inner(code),semesters!inner(number)";
 
-type Row = {
+export type Row = {
+  id: string; contributor_id: string | null; helpful_count: number; download_count: number;
   slug: string; title: string; description: string; resource_type: string; tags: string[]; file_url: string | null; file_path: string | null;
   contributor_name: string; view_count: number; created_at: string;
   subjects: { name: string; code: string }; branches: { code: string }; semesters: { number: number };
@@ -39,9 +44,9 @@ type Row = {
 
 const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
-function toResource(r: Row): LibraryResource {
+export function toResource(r: Row): LibraryResource {
   return {
-    id: r.slug, title: r.title, type: r.resource_type, subject: r.subjects.name, code: r.subjects.code,
+    id: r.slug, uuid: r.id, contributorId: r.contributor_id, downloads: r.download_count, helpful: r.helpful_count, title: r.title, type: r.resource_type, subject: r.subjects.name, code: r.subjects.code,
     branch: r.branches.code, semester: r.semesters.number, contributor: r.contributor_name, date: fmtDate(r.created_at),
     views: r.view_count, description: r.description, tags: r.tags ?? [], fileUrl: r.file_url, filePath: r.file_path,
   };
